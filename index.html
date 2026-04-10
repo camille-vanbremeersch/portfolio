@@ -274,6 +274,25 @@
     @media (max-width: 480px) {
       .grid { grid-template-columns: 1fr; }
     }
+
+    #lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.92);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  cursor: pointer;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+}
   </style>
 </head>
 
@@ -325,43 +344,43 @@
 
       <!-- Photo 1 : portrait plein -->
       <div class="grid-item reveal">
-        <img src="enfant_italie.jpg" alt="Photo 1" />
+        <img src="enfant_italie.jpg" alt="Photo 1" onclick="openImage(this.src)/>
         <!-- <p class="caption">Légende optionnelle</p> -->
       </div>
 
       <!-- Photo 2 : portrait -->
       <div class="grid-item reveal">
-        <img src="sud_enfant.JPG" alt="Photo 2" />
+        <img src="sud_enfant.JPG" alt="Photo 2" onclick="openImage(this.src)"/>
       </div>
 
       <!-- Photo 3 : portrait -->
       <div class="grid-item reveal">
-        <img src="enfant_lux.jpg" alt="Photo 3" />
+        <img src="enfant_lux.jpg" alt="Photo 3" onclick="openImage(this.src)"/>
       </div>
 
       <!-- Photo 4 : paysage sur 2 colonnes -->
       <div class="grid-item landscape span-2 reveal">
-        <img src="lux_statue.jpg" alt="Photo 4" />
+        <img src="lux_statue.jpg" alt="Photo 4" onclick="openImage(this.src)"/>
       </div>
 
       <!-- Photo 5 : portrait -->
       <div class="grid-item reveal">
-        <img src="cupidon_statue_zoom.jpg" alt="Photo 5" />
+        <img src="cupidon_statue_zoom.jpg" alt="Photo 5" onclick="openImage(this.src)"/>
       </div>
 
       <!-- Photo 6 : portrait -->
       <div class="grid-item reveal">
-        <img src="fete_musique.jpg" alt="Photo 6" />
+        <img src="fete_musique.jpg" alt="Photo 6" onclick="openImage(this.src)"/>
       </div>
 
       <!-- Photo 7 : paysage carré -->
       <div class="grid-item square reveal">
-        <img src="cadran.jpg" alt="Photo 7" />
+        <img src="cadran.jpg" alt="Photo 7" onclick="openImage(this.src)"/>
       </div>
 
       <!-- Photo 8 : portrait -->
       <div class="grid-item reveal">
-        <img src="grenier_manois.JPG" alt="Photo 8" />
+        <img src="grenier_manois.JPG" alt="Photo 8" onclick="openImage(this.src)"/>
       </div>
 
     </div>
@@ -419,7 +438,15 @@
       el.style.transitionDelay = `${(i % 3) * 80}ms`;
       observer.observe(el);
     });
+    function openImage(src) {
+  document.getElementById("lightbox").style.display = "flex";
+  document.getElementById("lightbox-img").src = src;
+}
   </script>
 
+  <div id="lightbox" onclick="this.style.display='none'">
+  <img id="lightbox-img">
+</div>
+  
 </body>
 </html>
