@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+    TITRE DE L'ONGLET NAVIGATEUR — modifie ici
+  ============================================================ -->
+  <title>Prénom Nom — Photographie</title>
+
+  <!-- Google Fonts — police élégante et éditoriale -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+      COULEURS & VARIABLES — modifie ici pour changer l'ambiance
+    ============================================================ */
+    :root {
+      --bg:        #f5f4f1;   /* fond ivoire chaud */
+      --text:      #1a1a18;   /* noir doux */
+      --muted:     #888880;   /* gris pour détails secondaires */
+      --accent:    #1a1a18;   /* couleur des liens au survol */
+      --gap:       2px;       /* espace entre les photos de la grille */
+    }
+
+    /* ============================================================
+      RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+      HEADER / NAVIGATION
+    ============================================================ */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 32px 40px;
+      mix-blend-mode: multiply; /* s'adapte aux images en dessous */
+    }
+
+    .site-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.2;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    /* ============================================================
+      MODIFIE LES LIENS DE NAVIGATION ICI
+      Ajoute ou supprime des <a> selon tes besoins
+    ============================================================ */
+    nav {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+
+    nav a:hover { opacity: 0.4; }
+
+    /* ============================================================
+      HERO — grande image ou phrase d'accroche en haut
+    ============================================================ */
+    .hero {
+      padding-top: 120px;  /* espace pour le header fixe */
+      padding-bottom: 0;
+    }
+
+    /* ============================================================
+      GRANDE IMAGE HERO
+      Remplace src="..." par le chemin de ta photo
+    ============================================================ */
+    .hero-image {
+      width: 100%;
+      height: 90vh;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ============================================================
+      SECTION : GRILLE DE PHOTOS
+    ============================================================ */
+    section {
+      padding: 80px 40px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    /* Grille principale — 3 colonnes par défaut */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--gap);
+    }
+
+    /* Variation 2 colonnes */
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+    /* Photo qui prend 2 colonnes de large */
+    .span-2 { grid-column: span 2; }
+
+    .grid-item {
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* ============================================================
+      LES PHOTOS DE LA GRILLE
+      Remplace src="..." par tes images
+      Tu peux changer aspect-ratio pour ajuster les proportions
+    ============================================================ */
+    .grid-item img {
+      width: 100%;
+      aspect-ratio: 3/4;      /* portrait par défaut */
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  opacity 0.3s ease;
+    }
+
+    .grid-item.landscape img {
+      aspect-ratio: 4/3;      /* paysage */
+    }
+
+    .grid-item.square img {
+      aspect-ratio: 1/1;      /* carré */
+    }
+
+    .grid-item:hover img {
+      transform: scale(1.03);
+      opacity: 0.92;
+    }
+
+    /* Légende optionnelle sous chaque photo */
+    .caption {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      padding: 10px 0 4px;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+      SECTION TEXTE / À PROPOS
+    ============================================================ */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      padding: 80px 40px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .about-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.15;
+      font-style: italic;
+      letter-spacing: 0.01em;
+    }
+
+    /* ============================================================
+      MODIFIE TON TEXTE DE PRÉSENTATION ICI
+    ============================================================ */
+    .about-text {
+      font-size: 13px;
+      line-height: 1.85;
+      color: var(--text);
+      max-width: 460px;
+    }
+
+    .about-text p + p { margin-top: 1em; }
+
+    .about-meta {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ============================================================
+      FOOTER
+    ============================================================ */
+    footer {
+      padding: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--text); }
+
+    /* ============================================================
+      ANIMATION D'ENTRÉE — les éléments apparaissent au scroll
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+      RESPONSIVE MOBILE
+    ============================================================ */
+    @media (max-width: 768px) {
+      header { padding: 24px 20px; }
+      section { padding: 60px 20px; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .about { grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; }
+      .about-title { font-size: 32px; }
+      footer { padding: 30px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
+      .span-2 { grid-column: span 1; }
+    }
+
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+    HEADER
+    Modifie ton prénom/nom et les liens de navigation
+  ============================================================ -->
+  <header>
+    <a class="site-name" href="#">
+      Prénom<br>Nom
+    </a>
+    <nav>
+      <a href="#photos">Photos</a>
+      <a href="#about">À propos</a>
+      <!-- <a href="mailto:toi@email.com">Contact</a> -->
+    </nav>
+  </header>
+
+
+  <!-- ============================================================
+    HERO — remplace l'image par ta meilleure photo
+    Tu peux supprimer cette section si tu préfères commencer
+    directement par la grille
+  ============================================================ -->
+  <div class="hero">
+    <img
+      class="hero-image"
+      src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80"
+      alt="Photo principale"
+    />
+  </div>
+
+
+  <!-- ============================================================
+    GRILLE DE PHOTOS
+    Ajoute / supprime des .grid-item selon ton nombre de photos.
+    Classes disponibles :
+      .landscape  → ratio 4/3  (paysage)
+      .square     → ratio 1/1  (carré)
+      (aucune)    → ratio 3/4  (portrait, par défaut)
+      .span-2     → occupe 2 colonnes
+  ============================================================ -->
+  <section id="photos">
+    <p class="section-label">Portfolio — 2024</p>
+
+    <div class="grid">
+
+      <!-- Photo 1 : portrait plein -->
+      <div class="grid-item reveal">
+        <img src="https://images.unsplash.com/photo-1519455953755-af066f52f1a6?w=800&q=80" alt="Photo 1" />
+        <!-- <p class="caption">Légende optionnelle</p> -->
+      </div>
+
+      <!-- Photo 2 : portrait -->
+      <div class="grid-item reveal">
+        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80" alt="Photo 2" />
+      </div>
+
+      <!-- Photo 3 : portrait -->
+      <div class="grid-item reveal">
+        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80" alt="Photo 3" />
+      </div>
+
+      <!-- Photo 4 : paysage sur 2 colonnes -->
+      <div class="grid-item landscape span-2 reveal">
+        <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&q=80" alt="Photo 4" />
+      </div>
+
+      <!-- Photo 5 : portrait -->
+      <div class="grid-item reveal">
+        <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=800&q=80" alt="Photo 5" />
+      </div>
+
+      <!-- Photo 6 : portrait -->
+      <div class="grid-item reveal">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80" alt="Photo 6" />
+      </div>
+
+      <!-- Photo 7 : paysage carré -->
+      <div class="grid-item square reveal">
+        <img src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=800&q=80" alt="Photo 7" />
+      </div>
+
+      <!-- Photo 8 : portrait -->
+      <div class="grid-item reveal">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" alt="Photo 8" />
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    SECTION À PROPOS
+    Modifie le titre, le texte, et les informations
+  ============================================================ -->
+  <div class="about" id="about">
+    <div>
+      <h2 class="about-title reveal">
+        La lumière<br>comme matière première.
+      </h2>
+      <div class="about-meta reveal">
+        <span>Basé·e à Paris</span>
+        <span>Disponible — 2024</span>
+        <span><a href="mailto:toi@email.com" style="color:inherit">toi@email.com</a></span>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <p>
+        Photographe généraliste avec une sensibilité particulière pour
+        la lumière naturelle, les textures et la matière. Mon travail
+        explore les formes simples dans des contextes du quotidien.
+      </p>
+      <p>
+        Formé·e à [école / expérience], je candidate aujourd'hui en
+        joaillerie pour prolonger ce rapport à la matière et au détail
+        dans une pratique artisanale.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+    FOOTER — modifie ton nom et ton email
+  ============================================================ -->
+  <footer>
+    <span>© 2024 Prénom Nom</span>
+    <a href="mailto:toi@email.com">toi@email.com</a>
+  </footer>
+
+
+  <!-- ============================================================
+    SCRIPT — animation d'apparition au scroll (ne pas modifier)
+  ============================================================ -->
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 3) * 80}ms`;
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
