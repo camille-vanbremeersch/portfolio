@@ -138,7 +138,7 @@
     .span-2 { grid-column: span 2; }
 
     .grid-item {
-      overflow: hidden;
+      /* overflow: hidden; */
       cursor: pointer;
     }
 
@@ -151,6 +151,7 @@
       width: 100%;
       height: auto;           /* respecte les proportions naturelles */
       display: block;
+      min-height: 50px; /* évite l'effondrement à zéro */
       transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                   opacity 0.3s ease;
     }
